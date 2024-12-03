@@ -15,7 +15,6 @@ class FacturaType(str, Enum):
 
 
 class Factura(BaseModel):
-    id: ObjectId = Field(default_factory=ObjectId, alias="_id")
     descripcion: str = Field(...)
     tipo: FacturaType = Field(...)
     total: float = Field(...)
@@ -25,7 +24,6 @@ class Factura(BaseModel):
         arbitrary_types_allowed=True,
         json_schema_extra={
             "example": {
-                "id": str(ObjectId()),
                 "descripcion": "Factura por alimentacion: empanadas [x10]",
                 "tipo": FacturaType.Alimentacion,
                 "total": 100.0,
@@ -36,11 +34,12 @@ class Factura(BaseModel):
 
 
 class FacturaOut(Factura):
+    id: PyObjectId = Field(alias="_id", default=None, serialization_alias="id")
     model_config = ConfigDict(
         from_attributes=True,
         json_schema_extra={
             "example": {
-                "id": str(ObjectId()),
+                "id": "64b9f1f4f1d2b2a3c4e5f6a7",
                 "descripcion": "Factura por alimentacion: empanadas [x10]",
                 "tipo": FacturaType.Alimentacion,
                 "total": 100.0,
