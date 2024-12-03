@@ -4,10 +4,11 @@ from .models import Factura
 class FacturaForm(forms.ModelForm):
     class Meta:
         model = Factura
-        fields =  ['id', 'cedula', 'descripcion', 'total']
+        fields =  ['institucion', 'direccion', 'nombre', 'telefono', 'correo']
         labels = {
-            'id': 'Id',
-            'cedula': 'Cedula',
-            'descripcion': 'Descripcion',
-            'total': 'Total',
+            'institucion': 'Institucion',
+            'direccion': 'Direccion',
+            'nombre': 'Nombre',
+            'telefono': 'Telefono',
+            'correo': 'Correo',
         }

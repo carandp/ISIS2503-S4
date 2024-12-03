@@ -4,10 +4,10 @@
 <div class="content">
     <div class="">
         <div class="page-header-title">
-            <h4 class="page-title">Facturas</h4>
+            <h4 class="page-title">Instituciones</h4>
             <div style="text-align:right;">
                 <button type="button" class="btn btn-success waves-effect waves-light"
-                        onClick=" window.location.href='/facturacreate' " style="text-align:center;">+
+                        onClick=" window.location.href='/instituciones/create' " style="text-align:center;">+
                 </button>
             </div>
         </div>
@@ -25,16 +25,16 @@
                     <table class="table table-hover">
                         <thead>
                         <tr style="color:#0E2EB0">
-                            <th>ID Factura</th>
-                            <th>Total</th>
+                            <th>Institucion</th>
+                            <th>Nombre</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         {% for factura in facturas_list %}
                         <tr>
-                            <td>{{ factura.id }}</td>
-                            <td>{{ factura.total }}</td>
+                            <td>{{ factura.institucion }}</td>
+                            <td>{{ factura.nombre }}</td>
                         </tr>
                         {% endfor %}
 
@@ -43,7 +43,7 @@
 
                     <div style="text-align:center;">
                         <button type="button" class="btn btn-primary waves-effect waves-light"
-                                onClick=" window.location.href='/' ">
+                                onClick=" window.location.href='/instituciones/' ">
                             Back
                         </button>
                     </div>
