@@ -15,7 +15,7 @@ class FacturaType(str, Enum):
 
 class Factura(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    descripcion: int = Field(...)
+    descripcion: str = Field(...)
     tipo: FacturaType = Field(...)
     total: float = Field(...)
     notificar: bool = Field(default=False)
@@ -26,7 +26,7 @@ class Factura(BaseModel):
             "example": {
                 "id": "1",
                 "descripcion": "Factura por alimentacion: empanadas [x10]",
-                "type": FacturaType.Alimentacion,
+                "tipo": FacturaType.Alimentacion,
                 "total": 100.0,
                 "notificar": False,
             }
@@ -41,7 +41,7 @@ class FacturaOut(Factura):
             "example": {
                 "id": "1",
                 "descripcion": "Factura por alimentacion: empanadas [x10]",
-                "type": FacturaType.Alimentacion,
+                "tipo": FacturaType.Alimentacion,
                 "total": 100.0,
                 "notificar": False,
             }
