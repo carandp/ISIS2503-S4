@@ -11,12 +11,13 @@ services:
         strip_path: false
         methods:
           - GET
-    plugins:
-      - name: request-transformer
-        config:
-          add:
-            headers:
-              x-redirected-by: kong
+        plugins:
+          - name: request-termination
+            config:
+              status_code: 302
+              body: ""
+              headers:
+                Location: "http://34.68.193.4:8080/instituciones/"
 
   - name: facturas_service
     host: facturas_upstream
