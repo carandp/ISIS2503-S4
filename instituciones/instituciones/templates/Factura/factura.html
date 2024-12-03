@@ -26,7 +26,10 @@
                         <thead>
                         <tr style="color:#0E2EB0">
                             <th>Institucion</th>
+                            <th>Direccion</th>
                             <th>Nombre</th>
+                            <th>Telefono</th>
+                            <th>Correo</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -34,7 +37,10 @@
                         {% for factura in facturas_list %}
                         <tr>
                             <td>{{ factura.institucion }}</td>
+                            <td>{{ factura.direccion }}</td>
                             <td>{{ factura.nombre }}</td>
+                            <td>{{ factura.telefono }}</td>
+                            <td>{{ factura.correo }}</td>
                         </tr>
                         {% endfor %}
 

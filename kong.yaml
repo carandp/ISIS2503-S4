@@ -1,5 +1,6 @@
 _format_version: "2.1"
 
+services:
   - name: facturas_service
     host: facturas_upstream
     protocol: http
@@ -8,7 +9,7 @@ _format_version: "2.1"
         paths:
           - /facturas
         strip_path: false
-  
+
   - name: notificaciones_service
     host: notificaciones_upstream
     protocol: http
@@ -18,16 +19,14 @@ _format_version: "2.1"
           - /notificaciones
         strip_path: false
 
-# IP's DB:
-# facturas: 10.128.0.83
-  
+upstreams:
   - name: facturas_upstream
     targets:
       - target: 10.128.0.85:8080
         weight: 100
       - target: 10.128.0.86:8080
         weight: 100
-  
+
   - name: notificaciones_upstream
     targets:
       - target: 10.128.0.87:8080
