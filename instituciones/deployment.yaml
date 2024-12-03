@@ -1,30 +1,37 @@
-# ***************** Universidad de los Andes ***********************
-# ****** Departamento de Ingeniería de Sistemas y Computación ******
-# ********** Arquitectura y diseño de Software - ISIS2503 **********
-
 resources:
-
-# Instituciones deployment
-
 # Firewall rules
-- name: msd-service-db
+- name: authd-firewall-django
+  type: compute.v1.firewall
+  properties:
+    network: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/global/networks/default
+    priority: 1000
+    direction: INGRESS
+    sourceRanges: 
+    - 0.0.0.0/0
+    targetTags:
+    - authd-django
+    allowed:
+    - IPProtocol: TCP
+      ports: 
+      - 8080
+- name: authd-firewall-db
   type: compute.v1.firewall
   properties:
     network: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/global/networks/default
     priority: 1000
     direction: INGRESS
     sourceTags: 
-    - msd-services-firewall
+    - authd-django
     targetTags:
-    - msd-service-db
+    - authd-db
     allowed:
     - IPProtocol: TCP
       ports: 
       - 5432
 
 # Database instance
-- name: msd-instituciones-db
-  type: compute.v1.instance
+- type: compute.v1.instance
+  name: msd-instituciones-db
   properties:
     zone: us-central1-a
     machineType: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/zones/us-central1-a/machineTypes/e2-micro
@@ -34,7 +41,7 @@ resources:
       boot: true
       autoDelete: true
       initializeParams:
-        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/global/networks/default
       networkIP: 10.128.0.82
@@ -43,17 +50,24 @@ resources:
         type: ONE_TO_ONE_NAT
     tags:
       items: 
-      - msd-service-db
+      - authd-db
     metadata:
       items:
       - key: startup-script
         value: |
           #!/bin/bash
-          docker run --restart=always -d -e POSTGRES_USER=instituciones_user -e POSTGRES_DB=instituciones_db -e POSTGRES_PASSWORD=isis2503 -p 5432:5432 --name instituciones-db postgres
+          sudo apt-get update
+          sudo apt-get install -y postgresql postgresql-contrib
+          sudo -u postgres psql -c "CREATE USER monitoring_user WITH PASSWORD 'isis2503';"
+          sudo -u postgres createdb -O monitoring_user monitoring_db
+          echo "host all all 0.0.0.0/0 trust" | sudo tee -a /etc/postgresql/12/main/pg_hba.conf
+          echo "listen_addresses='*'" | sudo tee -a /etc/postgresql/12/main/postgresql.conf
+          echo "max_connections=2000" | sudo tee -a /etc/postgresql/12/main/postgresql.conf
+          sudo service postgresql restart
 
-# Service instance
-- name: msd-instituciones-ms
-  type: compute.v1.instance
+# Monitoring app django instance
+- type: compute.v1.instance
+  name: msd-instituciones-ms
   properties:
     zone: us-central1-a
     machineType: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/zones/us-central1-a/machineTypes/e2-micro
@@ -72,7 +86,7 @@ resources:
         type: ONE_TO_ONE_NAT
     tags:
       items: 
-      - msd-services-firewall
+      - authd-django
     metadata:
       items:
       - key: startup-script
@@ -80,8 +94,8 @@ resources:
           #!/bin/bash
           sudo apt-get update
           sudo apt install python3-pip -y
-          sudo mkdir /home/labs
-          cd /home/labs
+          sudo mkdir /labs
+          cd /labs
           sudo git clone https://github.com/carandp/ISIS2503-S4.git
           cd ISIS2503/instituciones
           sudo pip3 install -r requirements.txt
