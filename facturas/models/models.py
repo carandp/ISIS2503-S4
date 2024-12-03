@@ -25,7 +25,7 @@ class Factura(BaseModel):
         json_schema_extra={
             "example": {
                 "id": "1",
-                "descipcion": "Factura por alimentacion: empanadas [x10]",
+                "descripcion": "Factura por alimentacion: empanadas [x10]",
                 "type": FacturaType.Alimentacion,
                 "total": 100.0,
                 "notificar": False,
@@ -40,7 +40,7 @@ class FacturaOut(Factura):
         json_schema_extra={
             "example": {
                 "id": "1",
-                "descipcion": "Factura por alimentacion: empanadas [x10]",
+                "descripcion": "Factura por alimentacion: empanadas [x10]",
                 "type": FacturaType.Alimentacion,
                 "total": 100.0,
                 "notificar": False,
