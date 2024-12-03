@@ -8,6 +8,7 @@ Main functions:
 - delete_factura: Delete a factura
 """
 
+from bson import ObjectId
 from models.models import Factura, FacturaCollection
 from models.db import facturas_collection
 from pymongo.errors import DuplicateKeyError
@@ -29,11 +30,14 @@ async def get_factura(factura_id: str):
     :param factura_id: The id of the factura
     :return: The factura
     """
-    if (factura := await facturas_collection.find_one({"id": factura_id})) is not None:
+    if not ObjectId.is_valid(factura_id):
+        raise HTTPException(status_code=400, detail="Invalid factura ID format")
+
+    if (factura := await facturas_collection.find_one({"_id": ObjectId(factura_id)})) is not None:
         return factura
 
     raise HTTPException(
-        status_id=404, detail=f"Factura with id {factura_id} not found"
+        status_code=404, detail=f"Factura with id {factura_id} not found"
     )
 
 
@@ -41,7 +45,6 @@ async def create_factura(factura: Factura):
     """
     Insert a new factura record.
     """
-
     try:
         new_factura = await facturas_collection.insert_one(
             factura.model_dump(by_alias=True, exclude=["id"])
@@ -51,7 +54,7 @@ async def create_factura(factura: Factura):
 
     except DuplicateKeyError:
         raise HTTPException(
-            status_id=409, detail=f"Factura with id {factura.id} already exists"
+            status_code=409, detail=f"Factura with id {factura.id} already exists"
         )
 
 
@@ -62,24 +65,26 @@ async def update_factura(factura_id: str, factura: Factura):
     :param factura: The factura data
     :return: The updated factura
     """
+    if not ObjectId.is_valid(factura_id):
+        raise HTTPException(status_code=400, detail="Invalid factura ID format")
 
     try:
         update_result = await facturas_collection.update_one(
-            {"id": factura_id},
+            {"_id": ObjectId(factura_id)},
             {"$set": factura.model_dump(by_alias=True, exclude=["id"])},
         )
         if update_result.modified_count == 1:
             if (
-                updated_factura := await facturas_collection.find_one({"id": factura.id})
+                updated_factura := await facturas_collection.find_one({"_id": ObjectId(factura_id)})
             ) is not None:
                 return updated_factura
     except DuplicateKeyError:
         raise HTTPException(
-            status_id=409, detail=f"Factura with id {factura.id} already exists"
+            status_code=409, detail=f"Factura with id {factura.id} already exists"
         )
 
     raise HTTPException(
-        status_id=404,
+        status_code=404,
         detail=f"Factura with id {factura_id} not found or no updates were made",
     )
 
@@ -89,11 +94,14 @@ async def delete_factura(factura_id: str):
     Delete a factura
     :param factura_id: The id of the factura
     """
-    delete_result = await facturas_collection.delete_one({"id": factura_id})
+    if not ObjectId.is_valid(factura_id):
+        raise HTTPException(status_code=400, detail="Invalid factura ID format")
+
+    delete_result = await facturas_collection.delete_one({"_id": ObjectId(factura_id)})
 
     if delete_result.deleted_count == 1:
         return
 
     raise HTTPException(
-        status_id=404, detail=f"Factura with id {factura_id} not found"
+        status_code=404, detail=f"Factura with id {factura_id} not found"
     )

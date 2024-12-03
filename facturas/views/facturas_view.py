@@ -18,12 +18,12 @@ async def get_facturas():
 
 @router.get(
     "/{factura_code}",
-    response_description="Get a single factura by its code",
+    response_description="Get a single factura by its id",
     response_model=FacturaOut,
     status_code=status.HTTP_200_OK,
 )
-async def get_factura(factura_code: str):
-    return await facturas_service.get_factura(factura_code)
+async def get_factura(factura_id: str):
+    return await facturas_service.get_factura(factura_id)
 
 
 @router.post(

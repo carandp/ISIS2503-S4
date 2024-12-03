@@ -2,6 +2,7 @@
 
 import uuid
 from enum import Enum
+from bson import ObjectId
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List
 from models.db import PyObjectId
@@ -14,7 +15,7 @@ class FacturaType(str, Enum):
 
 
 class Factura(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    id: ObjectId = Field(default_factory=ObjectId, alias="_id")
     descripcion: str = Field(...)
     tipo: FacturaType = Field(...)
     total: float = Field(...)
@@ -24,7 +25,7 @@ class Factura(BaseModel):
         arbitrary_types_allowed=True,
         json_schema_extra={
             "example": {
-                "id": "1",
+                "id": str(ObjectId()),
                 "descripcion": "Factura por alimentacion: empanadas [x10]",
                 "tipo": FacturaType.Alimentacion,
                 "total": 100.0,
@@ -39,7 +40,7 @@ class FacturaOut(Factura):
         from_attributes=True,
         json_schema_extra={
             "example": {
-                "id": "1",
+                "id": str(ObjectId()),
                 "descripcion": "Factura por alimentacion: empanadas [x10]",
                 "tipo": FacturaType.Alimentacion,
                 "total": 100.0,
