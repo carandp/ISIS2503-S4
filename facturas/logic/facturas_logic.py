@@ -16,8 +16,8 @@ from fastapi import HTTPException
 
 async def get_facturas():
     """
-    Get a list of places
-    :return: A list of places
+    Get a list of facturas
+    :return: A list of facturas
     """
     facturas = await facturas_collection.find().to_list(1000)
     return FacturaCollection(facturas=facturas)

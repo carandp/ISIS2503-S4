@@ -51,4 +51,4 @@ class FacturaOut(Factura):
 
 class FacturaCollection(BaseModel):
     # A collection of places
-    places: List[FacturaOut] = Field(...)
+    facturas: List[FacturaOut] = Field(...)
