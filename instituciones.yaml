@@ -1,0 +1,93 @@
+# ***************** Universidad de los Andes ***********************
+# ****** Departamento de Ingeniería de Sistemas y Computación ******
+# ********** Arquitectura y diseño de Software - ISIS2503 **********
+
+resources:
+
+# Instituciones deployment
+
+# Firewall rules
+- name: msd-service-db
+  type: compute.v1.firewall
+  properties:
+    network: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/global/networks/default
+    priority: 1000
+    direction: INGRESS
+    sourceTags: 
+    - msd-services-firewall
+    targetTags:
+    - msd-service-db
+    allowed:
+    - IPProtocol: TCP
+      ports: 
+      - 5432
+
+# Database instance
+- name: msd-instituciones-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images/cos-101-17162-463-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/global/networks/default
+      networkIP: 10.128.0.82
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-service-db
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          docker run --restart=always -d -e POSTGRES_USER=instituciones_user -e POSTGRES_DB=instituciones_db -e POSTGRES_PASSWORD=isis2503 -p 5432:5432 --name instituciones-db postgres
+
+# Service instance
+- name: msd-instituciones-ms
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/global/networks/default
+      networkIP: 10.128.0.84
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - msd-services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install software-properties-common -y
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt-get update
+          sudo apt install python3.12 -y
+          sudo curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
+          sudo mkdir /home/labs
+          cd /home/labs
+          sudo git clone https://github.com/carandp/ISIS2503-S4.git
+          cd ISIS2503/instituciones
+          sudo python3.12 -m pip install -r requirements.txt
+          sudo python3 manage.py makemigrations
+          sudo python3 manage.py migrate

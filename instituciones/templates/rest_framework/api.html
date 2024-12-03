@@ -1,0 +1,12 @@
+{% extends "rest_framework/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col text-end">
+                <a href="/" class="btn btn-primary">Volver </a>
+            </div>
+        </div>
+    </div>
+    {{ block.super }}
+{% endblock %}

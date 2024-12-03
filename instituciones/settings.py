@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'measurements',
+    'rest_framework',
+    'instituciones',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'monitoring.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'monitoring', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,12 +78,20 @@ WSGI_APPLICATION = 'monitoring.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("MEASUREMENTS_DB", "measurements_db"),
-        'USER': os.environ.get("MEASUREMENTS_DB_USER", "measurements_user"),
-        'PASSWORD': os.environ.get("MEASUREMENTS_DB_PASSWD", "isis2503"),
-        'HOST': os.environ.get("MEASUREMENTS_DB_HOST", "10.128.0.83"),
-        'PORT': os.environ.get("MEASUREMENTS_DB_PORT", "5432")
+        'NAME': 'instituciones_db',
+        'USER': 'instituciones_user',
+        'PASSWORD': 'isis2503',
+        'HOST': '10.128.0.82',
+        'PORT': '5432',
     }
+}
+
+# REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
 }
 
 
@@ -125,13 +134,10 @@ USE_TZ = True
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'static', 'media')
+#MEDIA_URL = '/static/media/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
-
-PATH_API_GATEWAY = "http://" + os.environ.get("KONG_HOST", "10.128.0.81") + ":" + os.environ.get("KONG_PORT", "8000")
-PATH_VAR = PATH_API_GATEWAY + "/variables"
