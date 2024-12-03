@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from facturas.views import facturas_view
+from views import facturas_view
 
 API_PREFIX = "/api"
 router = APIRouter()
