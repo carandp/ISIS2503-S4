@@ -37,6 +37,7 @@ upstreams:
   - name: instituciones_redirect_upstream
     targets:
       - target: 34.68.193.4:8080
+        weight: 100
 
   - name: facturas_upstream
     targets:
