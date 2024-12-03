@@ -12,12 +12,12 @@ services:
         methods:
           - GET
         plugins:
-          - name: request-termination
+          - name: request-transformer
             config:
+              add:
+                headers:
+                  Location: "http://34.68.193.4:8080/instituciones/"
               status_code: 302
-              body: ""
-              headers:
-                Location: "http://34.68.193.4:8080/instituciones/"
 
   - name: facturas_service
     host: facturas_upstream
