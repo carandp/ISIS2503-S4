@@ -9,6 +9,6 @@ def get_variable(id):
     return (Factura)
 """
 def create_factura(form):
-    measurement = form.save()
-    measurement.save()
+    factura = form.save()
+    factura.save()
     return ()

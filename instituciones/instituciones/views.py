@@ -21,11 +21,9 @@ def factura_list(request):
         }
         return render(request, 'Factura/factura.html', context)
     else:
-        # Redirect me to /logout when I'm not an admin
         return HttpResponse("Unauthorized User")
 
 @login_required
-@admin_required
 def factura_create(request):
     role = getRole(request)
     if role == "admin":
