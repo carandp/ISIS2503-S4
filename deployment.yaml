@@ -138,7 +138,7 @@ resources:
         type: ONE_TO_ONE_NAT
     tags:
       items: 
-      - msd-facturas-db
+      - msd-service-db
     metadata:
       items:
       - key: startup-script
