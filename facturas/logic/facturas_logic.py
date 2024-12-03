@@ -61,7 +61,7 @@ async def create_factura(factura: Factura):
                 "correo": created_factura["correo"]
             }
             r = requests.post(PATH_NOT, json=data)
-            print(r.status_code)
+            print(r.status_code, r.headers, r.text)
         return created_factura
 
     except DuplicateKeyError:
