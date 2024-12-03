@@ -135,7 +135,7 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_URL = "/login/auth0" 
-LOGIN_REDIRECT_URL = "/" 
+LOGIN_REDIRECT_URL = "/instituciones/docs/" 
 LOGOUT_REDIRECT_URL = "https://dev-gvkcl2q1amkcj70k.us.auth0.com/v2/logout?returnTo=http%3A%2F%2F34.68.193.4:8080/instituciones" 
 
 SOCIAL_AUTH_TRAILING_SLASH = False # Remove end slash from routes 
