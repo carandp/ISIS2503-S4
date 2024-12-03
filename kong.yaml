@@ -49,12 +49,14 @@ services:
 upstreams:
   - name: instituciones_upstream
     targets:
-      - target: 10.128.0.84:8080
+      - target: 34.68.193.4:8080
         weight: 100
+
   - name: auth0_upstream1
     targets:
       - target: 34.68.193.4:8080
         weight: 100
+
   - name: auth0_upstream2
     targets:
       - target: 34.68.193.4:8080
