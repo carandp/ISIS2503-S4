@@ -1,15 +1,5 @@
 _format_version: "2.1"
 
-services:
-  - name: instituciones_service
-    host: instituciones_upstream
-    protocol: http
-    routes:
-      - name: instituciones
-        paths:
-          - /instituciones
-        strip_path: false
-
   - name: facturas_service
     host: facturas_upstream
     protocol: http
@@ -27,25 +17,9 @@ services:
         paths:
           - /notificaciones
         strip_path: false
-  
-  - name: auth_service
-    host: auth_upstream
-    protocol: http
-    routes:
-      - name: auth_route
-        paths:
-          - /login/auth0
-        strip_path: false
-
+        
 # IP's DB:
-# instituciones: 10.128.0.82
 # facturas: 10.128.0.83
-
-upstreams:
-  - name: instituciones_upstream
-    targets:
-      - target: 10.128.0.84:8080
-        weight: 100
   
   - name: facturas_upstream
     targets:
@@ -61,5 +35,5 @@ upstreams:
   
   - name: auth_upstream
     targets:
-      - target: 10.128.0.84:8080
+      - target: 35.202.37.206:8080
         weight: 100
