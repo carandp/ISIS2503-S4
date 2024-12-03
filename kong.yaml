@@ -1,31 +1,51 @@
 _format_version: "2.1"
 
 services:
-  - name: variables_service
-    host: variables_upstream
+  - name: instituciones_service
+    host: instituciones_upstream
     protocol: http
     routes:
-      - name: variables
+      - name: instituciones
         paths:
-          - /variables
+          - /instituciones
         strip_path: false
 
-  - name: measurements_service
-    host: measurements_upstream
+  - name: facturas_service
+    host: facturas_upstream
     protocol: http
     routes:
-      - name: measurements
+      - name: facturas
         paths:
-          - /measurements
+          - /facturas
         strip_path: false
-    
+  
+  - name: notivicaciones_service
+    host: notivicaciones_upstream
+    protocol: http
+    routes:
+      - name: notivicaciones
+        paths:
+          - /notivicaciones
+        strip_path: false
+
+# IP's DB:
+# instituciones: 10.128.0.82
+# facturas: 10.128.0.83
+
 upstreams:
-  - name: variables_upstream
+  - name: instituciones_upstream
     targets:
       - target: 10.128.0.84:8080
         weight: 100
-
-  - name: measurements_upstream
+  
+  - name: facturas_upstream
     targets:
       - target: 10.128.0.85:8080
+        weight: 100
+      - target: 10.128.0.86:8080
+        weight: 100
+  
+  - name: notivicaciones_upstream
+    targets:
+      - target: 10.128.0.87:8080
         weight: 100
