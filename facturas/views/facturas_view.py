@@ -17,7 +17,7 @@ async def get_facturas():
 
 
 @router.get(
-    "/{factura_code}",
+    "/{factura_id}",
     response_description="Get a single factura by its id",
     response_model=FacturaOut,
     status_code=status.HTTP_200_OK,
@@ -37,7 +37,7 @@ async def create_factura(factura: Factura = Body(...)):
 
 
 @router.put(
-    "/{factura_code}",
+    "/{factura_id}",
     response_description="Update a factura",
     response_model=FacturaOut,
     status_code=status.HTTP_200_OK,
@@ -47,7 +47,7 @@ async def update_factura(factura_code: str, factura: Factura = Body(...)):
 
 
 @router.delete(
-    "/{factura_code}",
+    "/{factura_id}",
     response_description="Delete a factura",
     status_code=status.HTTP_204_NO_CONTENT,
 )
