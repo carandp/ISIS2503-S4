@@ -16,7 +16,7 @@ def factura_list(request):
         context = {
             'facturas_list': facturas
         }
-        return render(request, 'Factura/factura.html', context)
+        return render(request, 'instituciones/factura.html', context)
     else:
         return HttpResponse("Unauthorized User")
 
