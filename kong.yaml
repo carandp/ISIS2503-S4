@@ -1,6 +1,17 @@
 _format_version: "2.1"
 
 services:
+  - name: instituciones_service
+    host: instituciones_upstream
+    protocol: http
+    routes:
+      - name: instituciones
+        paths:
+          - /instituciones
+          - /complete/auth0
+          - /login/auth0
+        strip_path: false
+
   - name: facturas_service
     host: facturas_upstream
     protocol: http
@@ -20,6 +31,11 @@ services:
         strip_path: false
 
 upstreams:
+  - name: instituciones_upstream
+    targets:
+      - target: 34.68.193.4:8080
+        weight: 100
+
   - name: facturas_upstream
     targets:
       - target: 10.128.0.85:8080
