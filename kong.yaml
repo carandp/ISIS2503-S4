@@ -17,7 +17,7 @@ _format_version: "2.1"
         paths:
           - /notificaciones
         strip_path: false
-        
+
 # IP's DB:
 # facturas: 10.128.0.83
   
@@ -31,9 +31,4 @@ _format_version: "2.1"
   - name: notificaciones_upstream
     targets:
       - target: 10.128.0.87:8080
-        weight: 100
-  
-  - name: auth_upstream
-    targets:
-      - target: 35.202.37.206:8080
         weight: 100
