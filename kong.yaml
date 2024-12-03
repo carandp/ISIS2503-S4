@@ -16,8 +16,7 @@ services:
             config:
               add:
                 headers:
-                  Location: "http://34.68.193.4:8080/instituciones/"
-              status_code: 302
+                  - Location: "http://34.68.193.4:8080/instituciones/"
 
   - name: facturas_service
     host: facturas_upstream
