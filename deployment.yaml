@@ -109,9 +109,9 @@ resources:
     priority: 1000
     direction: INGRESS
     sourceTags: 
-    - msd-facturas-firewall
+    - msd-services-firewall
     targetTags:
-    - msd-facturas-mongodb
+    - msd-service-mongodb
     allowed:
     - IPProtocol: TCP
       ports: 
@@ -170,7 +170,7 @@ resources:
         type: ONE_TO_ONE_NAT
     tags:
       items: 
-      - msd-facturas-firewall
+      - msd-services-firewall
     metadata:
       items:
       - key: startup-script
@@ -208,7 +208,7 @@ resources:
         type: ONE_TO_ONE_NAT
     tags:
       items: 
-      - msd-facturas-firewall
+      - msd-services-firewall
     metadata:
       items:
       - key: startup-script
