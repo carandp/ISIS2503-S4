@@ -51,16 +51,17 @@ async def create_factura(factura: Factura):
             factura.model_dump(by_alias=True, exclude={"id"})
         )
         created_factura = await facturas_collection.find_one({"_id": new_factura.inserted_id})
-        data = {
-            "id": str(created_factura["_id"]),
-            "institucion": created_factura["institucion"],
-            "tipo": created_factura["tipo"],
-            "descripcion": created_factura["descripcion"],
-            "total": created_factura["total"],
-            "correo": created_factura["correo"]
-        }
-        r = requests.post(PATH_NOT, json=data)
-        print(r.status_code)
+        if (created_factura["notificar"]):
+            data = {
+                "id": str(created_factura["_id"]),
+                "institucion": created_factura["institucion"],
+                "tipo": created_factura["tipo"],
+                "descripcion": created_factura["descripcion"],
+                "total": created_factura["total"],
+                "correo": created_factura["correo"]
+            }
+            r = requests.post(PATH_NOT, json=data)
+            print(r.status_code)
         return created_factura
 
     except DuplicateKeyError:
