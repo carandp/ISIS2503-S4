@@ -9,11 +9,14 @@ services:
         paths:
           - /instituciones
         strip_path: false
-        methods: 
+        methods:
           - GET
-        redirect:
-          status_code: 302
-          target_url: "http://34.68.193.4:8080/instituciones/"
+        plugins:
+          - name: request-transformer
+            config:
+              add:
+                - "Location: http://34.68.193.4:8080/instituciones/"
+              status_code: 302
 
   - name: facturas_service
     host: facturas_upstream
