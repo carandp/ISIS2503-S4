@@ -102,7 +102,7 @@ resources:
 # Facturas deployment
 
 # Firewall rules
-- name: msd-facturas-db
+- name: msd-service-db
   type: compute.v1.firewall
   properties:
     network: https://www.googleapis.com/compute/v1/projects/cpena-isis2503-talleres/global/networks/default
