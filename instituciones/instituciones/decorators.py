@@ -11,6 +11,6 @@ def admin_required(view_func):
     def _wrapped_view_func(request, *args, **kwargs):
         if not request.user.is_authenticated or not getRole(request) == "admin":
             logout(request)
-            return redirect('/instituciones/')
+            return redirect('/instituciones/create/')
         return view_func(request, *args, **kwargs)
     return _wrapped_view_func
