@@ -7,7 +7,7 @@ services:
     routes:
       - name: instituciones
         paths:
-          - /instituciones
+          - /instituciones/
         strip_path: false
 
   - name: auth0_service1
