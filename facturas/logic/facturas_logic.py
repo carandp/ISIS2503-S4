@@ -7,12 +7,16 @@ Main functions:
 - update_factura: Update a factura
 - delete_factura: Delete a factura
 """
-
+import os
 from bson import ObjectId as BsonObjectId
+import requests
 from models.models import Factura, FacturaCollection
 from models.db import facturas_collection
 from pymongo.errors import DuplicateKeyError
 from fastapi import HTTPException
+
+PATH_API_GATEWAY = "http://" + os.environ.get("KONG_HOST", "10.128.0.81") + ":" + os.environ.get("KONG_PORT", "8000")
+PATH_NOT = PATH_API_GATEWAY + "/notificaciones"
 
 async def get_facturas():
     """
@@ -47,6 +51,16 @@ async def create_factura(factura: Factura):
             factura.model_dump(by_alias=True, exclude={"id"})
         )
         created_factura = await facturas_collection.find_one({"_id": new_factura.inserted_id})
+        data = {
+            "id": str(created_factura["_id"]),
+            "institucion": created_factura["institucion"],
+            "tipo": created_factura["tipo"],
+            "descripcion": created_factura["descripcion"],
+            "total": created_factura["total"],
+            "correo": created_factura["correo"]
+        }
+        r = requests.post(PATH_NOT, json=data)
+        print(r.status_code)
         return created_factura
 
     except DuplicateKeyError:

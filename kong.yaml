@@ -19,13 +19,13 @@ services:
           - /facturas
         strip_path: false
   
-  - name: notivicaciones_service
-    host: notivicaciones_upstream
+  - name: notificaciones_service
+    host: notificaciones_upstream
     protocol: http
     routes:
-      - name: notivicaciones
+      - name: notificaciones
         paths:
-          - /notivicaciones
+          - /notificaciones
         strip_path: false
 
 # IP's DB:
@@ -45,7 +45,7 @@ upstreams:
       - target: 10.128.0.86:8080
         weight: 100
   
-  - name: notivicaciones_upstream
+  - name: notificaciones_upstream
     targets:
       - target: 10.128.0.87:8080
         weight: 100

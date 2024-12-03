@@ -14,6 +14,7 @@ class Factura(BaseModel):
     descripcion: str = Field(...)
     total: float = Field(...)
     notificar: bool = Field(default=False)
+    correo: str = Field(default=None)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
@@ -24,6 +25,7 @@ class Factura(BaseModel):
                 "descripcion": "Factura por alimentacion: empanadas [x10]",
                 "total": 100.0,
                 "notificar": False,
+                "correo": "",
             }
         },
     )
@@ -41,6 +43,7 @@ class FacturaOut(Factura):
                 "descripcion": "Factura por alimentacion: empanadas [x10]",
                 "total": 100.0,
                 "notificar": False,
+                "correo": "",
             }
         },
     )
