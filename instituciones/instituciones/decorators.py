@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 
-from instituciones.monitoring.auth0backend import getRole
+from monitoring.auth0backend import getRole
 
 def admin_required(view_func):
     """
