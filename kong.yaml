@@ -27,6 +27,15 @@ services:
         paths:
           - /notificaciones
         strip_path: false
+  
+  - name: auth_service
+    host: auth_upstream
+    protocol: http
+    routes:
+      - name: auth_route
+        paths:
+          - /login/auth0
+        strip_path: false
 
 # IP's DB:
 # instituciones: 10.128.0.82
@@ -48,4 +57,9 @@ upstreams:
   - name: notificaciones_upstream
     targets:
       - target: 10.128.0.87:8080
+        weight: 100
+  
+  - name: auth_upstream
+    targets:
+      - target: 10.128.0.84:8080
         weight: 100
