@@ -14,6 +14,14 @@ from models.db import facturas_collection
 from pymongo.errors import DuplicateKeyError
 from fastapi import HTTPException
 
+async def get_facturas():
+    """
+    Get a list of places
+    :return: A list of places
+    """
+    facturas = await facturas_collection.find().to_list(1000)
+    return FacturaCollection(facturas=facturas)
+
 async def get_factura(factura_id: str):
     """
     Get a single factura
