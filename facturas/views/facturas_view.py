@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, Body
-import facturas.logic.facturas_logic as facturas_service
+import logic.facturas_logic as facturas_service
 from models.models import Factura, FacturaOut, FacturaCollection
 
 router = APIRouter()
